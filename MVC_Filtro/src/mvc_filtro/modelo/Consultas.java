@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 
 public class Consultas {
     
-    Connection cx;
+    Connection cx = null;
     
     String url = "jdbc:mysql://b4am2aeofy1gaitu1rhb-mysql.services.clever-cloud.com:3306/b4am2aeofy1gaitu1rhb";
     String user = "u6k39w0odsjvh8xd";
@@ -30,7 +30,7 @@ public class Consultas {
     /*mostrar todos los ninjas*/
     public List<String> MostrarNinjas(Ninja ninja){
 
-        String sql = "select * from Ninja";
+        String sql = "select n.*, h.descripcion from Ninja n inner join Habilidad h on n.id_ninja = h.id_ninja";
         List<String> listaNinjas = new ArrayList<>();
         try{
             Connection cx = getConexion();  
@@ -38,10 +38,13 @@ public class Consultas {
             PreparedStatement ps = cx.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                listaNinjas.add(rs.getInt("id_ninja")
-                        + " - " + rs.getString("nombre")
-                        + " - " + rs.getString("rango")
-                        + " - " + rs.getString("aldea"));     
+                listaNinjas.add( """
+                                 ***************************************
+                                 Id ninja: """ + rs.getInt("id_ninja")
+                            + "\nNombre: " + rs.getString("nombre")
+                            + "\nRango: " + rs.getString("rango")
+                            + "\nAldea: " + rs.getString("aldea") 
+                            +"\nHabilidad: " + rs.getString("descripcion") +"\n");
             }
         }
         catch(SQLException e){
@@ -57,7 +60,7 @@ public class Consultas {
                     select n.*, mn.id_mision_ninja, mn.fechaInicio, mn.fechaFin, m.* from MisionNinja mn
                     inner join Mision m on m.id_mision = mn.id_mision
                     inner join Ninja n on n.id_ninja = mn.id_ninja
-                    where mn.fechaFin < current_date() and n.id_ninja = ?""";
+                    where mn.fechaFin > current_date() and n.id_ninja = ?""";
         List<String> listaMisiones = new ArrayList<>();
         try{
             Connection cx = getConexion();
@@ -65,16 +68,16 @@ public class Consultas {
             ps.setInt(1, md.getId_ninja());
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                listaMisiones.add(rs.getInt("id_ninja")
-                            + " - " + rs.getString("nombre")
-                            + " - " +  rs.getString("rango")
-                            + " - " +  rs.getString("aledea")
-                            + " - " +  rs.getInt("id_mision")
-                            + " - " +  rs.getString("descripcion")
-                            + " - " +  rs.getString("rango")
-                            + " - " +  rs.getString("recompensa")
-                            + " - " +  rs.getString("fechaInicio")
-                            + " - " +  rs.getString("fechaFin"));
+                listaMisiones.add("/n" + "Id ninja: " + rs.getInt("id_ninja")
+                            + "/n" + "Nombre: " + rs.getString("nombre")
+                            + "/n"+ "Rango: " +  rs.getString("rango")
+                            + "/n"+ "Aldea: " +  rs.getString("aldea")
+                            + "/n"+ "Id misión: " +  rs.getInt("id_mision")
+                            + "/n"+ "Descripción: " +  rs.getString("descripcion")
+                            + "/n"+ "Rango aldea: " +  rs.getString("rango")
+                            + "/n"+ "Recompensa: " +  rs.getString("recompensa")
+                            + "/n"+ "Fecha de inicio: " +  rs.getString("fechaInicio")
+                            + "/n"+ "Fecha de finalización: " +  rs.getString("fechaFin"));
             }
         }
         catch(SQLException e){
@@ -90,7 +93,7 @@ public class Consultas {
                     select n.*, mn.id_mision_ninja, mn.fechaInicio, mn.fechaFin, m.* from MisionNinja mn
                     inner join Mision m on m.id_mision = mn.id_mision
                     inner join Ninja n on n.id_ninja = mn.id_ninja
-                    where mn.fechaFin > current_date() and n.id_ninja = ?""";
+                    where mn.fechaFin < current_date() and n.id_ninja = ?""";
         List<String> listaMisiones = new ArrayList<>();
         try{
             Connection cx = getConexion();
@@ -98,16 +101,16 @@ public class Consultas {
             ps.setInt(1, md.getId_ninja());
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                listaMisiones.add(rs.getInt("id_ninja")
-                            + " - " + rs.getString("nombre")
-                            + " - " +  rs.getString("rango")
-                            + " - " +  rs.getString("aledea")
-                            + " - " +  rs.getInt("id_mision")
-                            + " - " +  rs.getString("descripcion")
-                            + " - " +  rs.getString("rango")
-                            + " - " +  rs.getString("recompensa")
-                            + " - " +  rs.getString("fechaInicio")
-                            + " - " +  rs.getString("fechaFin"));
+                listaMisiones.add("/n" + "Id ninja: " + rs.getInt("id_ninja")
+                            + "/n" + "Nombre: " + rs.getString("nombre")
+                            + "/n"+ "Rango: " +  rs.getString("rango")
+                            + "/n"+ "Aldea: " +  rs.getString("aldea")
+                            + "/n"+ "Id misión: " +  rs.getInt("id_mision")
+                            + "/n"+ "Descripción: " +  rs.getString("descripcion")
+                            + "/n"+ "Rango aldea: " +  rs.getString("rango")
+                            + "/n"+ "Recompensa: " +  rs.getString("recompensa")
+                            + "/n"+ "Fecha de inicio: " +  rs.getString("fechaInicio")
+                            + "/n"+ "Fecha de finalización: " +  rs.getString("fechaFin"));
             }
         }
         catch(SQLException e){
@@ -150,7 +153,7 @@ public class Consultas {
         PreparedStatement ps = null;
         Connection cx = getConexion();
         
-        String sql = "upate MisionNinja set fechaFin=? where id_mision_ninja = ?";
+        String sql = "update MisionNinja set fechaFin=? where id_mision_ninja = ?";
         
         try{
             ps = cx.prepareStatement(sql);
@@ -180,23 +183,23 @@ public class Consultas {
                     select n.*, mn.id_mision_ninja, mn.fechaInicio, mn.fechaFin, m.* from MisionNinja mn
                     inner join Mision m on m.id_mision = mn.id_mision
                     inner join Ninja n on n.id_ninja = mn.id_ninja
-                    where mn.fechaFin > current_date()""";
+                    where mn.fechaFin < current_date()""";
         List<String> listaCompletas = new ArrayList<>();
         try{
             Connection cx = getConexion();
             PreparedStatement ps = cx.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                listaCompletas.add(rs.getInt("id_ninja")
-                            + " - " + rs.getString("nombre")
-                            + " - " +  rs.getString("rango")
-                            + " - " +  rs.getString("aldea")
-                            + " - " +  rs.getInt("id_mision")
-                            + " - " +  rs.getString("descripcion")
-                            + " - " +  rs.getString("rango")
-                            + " - " +  rs.getString("recompensa")
-                            + " - " +  rs.getString("fechaInicio")
-                            + " - " +  rs.getString("fechaFin"));
+                listaCompletas.add("/n" + "Id ninja: " + rs.getInt("id_ninja")
+                            + "/n" + "Nombre: " + rs.getString("nombre")
+                            + "/n"+ "Rango: " +  rs.getString("rango")
+                            + "/n"+ "Aldea: " +  rs.getString("aldea")
+                            + "/n"+ "Id misión: " +  rs.getInt("id_mision")
+                            + "/n"+ "Descripción: " +  rs.getString("descripcion")
+                            + "/n"+ "Rango aldea: " +  rs.getString("rango")
+                            + "/n"+ "Recompensa: " +  rs.getString("recompensa")
+                            + "/n"+ "Fecha de inicio: " +  rs.getString("fechaInicio")
+                            + "/n"+ "Fecha de finalización: " +  rs.getString("fechaFin"));
             }
         }
         catch(SQLException e){

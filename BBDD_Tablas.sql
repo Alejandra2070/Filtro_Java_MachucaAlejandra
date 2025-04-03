@@ -12,15 +12,22 @@ create table Mision(
     recompensa int not null
 );
 
+select n.*, mn.id_mision_ninja, mn.fechaInicio, mn.fechaFin, m.* from MisionNinja mn
+                    inner join Mision m on m.id_mision = mn.id_mision
+                    inner join Ninja n on n.id_ninja = mn.id_ninja
+                    where mn.fechaFin < current_date(); 
+
 create table MisionNinja(
 	id_mision_ninja int primary key auto_increment not null,
-    fechaInicio date not null,
-    fechaFin date not null,
+    fechaInicio date null,
+    fechaFin date null,
     id_ninja int not null,
     id_mision int not null,
     foreign key(id_ninja) references Ninja(id_ninja),
     foreign key(id_mision) references Mision(id_mision)
 );
+
+select * from MisionNinja;
 
 create table Habilidad(
 	id_hab_ninja int primary key auto_increment not null,
@@ -29,3 +36,6 @@ create table Habilidad(
     id_ninja int not null,
     foreign key(id_ninja) references Ninja(id_ninja)
 );
+
+select * from Habilidad;
+select n.*, h.descripcion from Ninja n inner join Habilidad h on n.id_ninja = h.id_ninja;

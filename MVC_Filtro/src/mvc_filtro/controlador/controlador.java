@@ -44,7 +44,6 @@ public class controlador {
                     for(String nin : listaNinjas){
                         System.out.println(nin);
                     }
-                    System.out.println("Lista de ninjas: ");
                     break;
                     
                 case 2:
@@ -52,10 +51,16 @@ public class controlador {
                     List<String> listaDisponibles = new ArrayList<>();
                     misionesDisponibles md = vista.verMisionesDisponibles();
                     listaDisponibles = consultas.MisionesDisponibles(md);
-                    for(String mis : listaDisponibles){
-                        System.out.println(mis);
+                    if(listaDisponibles.size() > 0){
+                        for(String mis : listaDisponibles){
+                            System.out.println(mis);
+                        }
+                        System.out.println("Misiones disponibles: ");
                     }
-                    System.out.println("Misiones disponibles: ");
+                    else{
+                        System.out.println("No hay misiones disponibles.");
+                    }
+                    
                     break;
                     
                 case 3:
@@ -63,10 +68,15 @@ public class controlador {
                     List<String> listaCompletados = new ArrayList<>();
                     misionesDisponibles md2 = vista.verMisionesCompletadas();
                     listaCompletados = consultas.MisionesCompletadas(md2);
-                    for(String mis : listaCompletados){
-                        System.out.println(mis);
+                    if(listaCompletados.size() > 0){
+                        for(String mis : listaCompletados){
+                            System.out.println(mis);
+                        }
+                        System.out.println("Misiones completadas: ");
+                        }
+                    else{
+                        System.out.println("No hay misiones completadas.");
                     }
-                    System.out.println("Misiones completadas: ");
                     break;
                     
                 case 4:
@@ -92,8 +102,13 @@ public class controlador {
                     
                 case 7:
                     System.out.println("Gracias por usar nuestro programa. Vuelve pronto!");
+                    break;
                     
             }
+            if (opc == 7){
+                break;
+            }
         }
+        
     }
 }

@@ -45,6 +45,7 @@ public class Vista {
         System.out.println("Ingresa el id: ");
         int ide = scanner.nextInt();
         System.out.println("Ingresa la fecha de finalización (yyyy-mm-dd): ");
+        scanner.nextLine();
         String fecha = scanner.nextLine();
         return new completarMision(ide, fecha);
     }

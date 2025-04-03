@@ -13,5 +13,4 @@ public class MVC_Filtro {
         
         ctr.iniciar();
     }
-    
 }
