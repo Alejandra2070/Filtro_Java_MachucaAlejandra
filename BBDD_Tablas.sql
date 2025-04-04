@@ -16,6 +16,7 @@ select n.*, mn.id_mision_ninja, mn.fechaInicio, mn.fechaFin, m.* from MisionNinj
                     inner join Mision m on m.id_mision = mn.id_mision
                     inner join Ninja n on n.id_ninja = mn.id_ninja
                     where mn.fechaFin < current_date(); 
+                    
 
 create table MisionNinja(
 	id_mision_ninja int primary key auto_increment not null,
@@ -36,6 +37,3 @@ create table Habilidad(
     id_ninja int not null,
     foreign key(id_ninja) references Ninja(id_ninja)
 );
-
-select * from Habilidad;
-select n.*, h.descripcion from Ninja n inner join Habilidad h on n.id_ninja = h.id_ninja;
